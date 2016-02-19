@@ -5,9 +5,7 @@ function configure_states($stateProvider, $urlRouterProvider) {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/app.html',
-    controller: function($scope) {
-      $scope.title = 'Noodle'
-    }
+    controller: 'app_control'
   })
 
   .state('app.state0', {
@@ -15,9 +13,7 @@ function configure_states($stateProvider, $urlRouterProvider) {
     views: {
       viewContent: {
         templateUrl: 'templates/view0.html',
-        controller: function($scope) {
-          $scope.items = ["B", "List", "Of", "Items"];
-        }
+        controller: 'state0_control'
       }
     }
   })
@@ -27,9 +23,7 @@ function configure_states($stateProvider, $urlRouterProvider) {
     views: {
       viewContent: {
         templateUrl: 'templates/view1.html',
-        controller: function($scope) {
-          $scope.items = ["this", "is", "a", "different", "view"];
-        }
+        controller: 'state1_control'
       }
     }
   })
@@ -38,5 +32,5 @@ function configure_states($stateProvider, $urlRouterProvider) {
 }
 
 
-angular.module('noodle', ['ui.router'])
+angular.module('noodle', ['ui.router', 'app.controllers'])
 .config(['$stateProvider', '$urlRouterProvider', configure_states])
