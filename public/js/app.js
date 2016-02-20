@@ -31,6 +31,22 @@ function configure_states($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/app/home');
 }
 
+function run($window, $rootScope) {
+  //so we can always tell when we're online or not
+  $rootScope.online = navigator.onLine;
+  $window.addEventListener("offline", function () {
+    $rootScope.$apply(function() {
+      $rootScope.online = false;
+    });
+  }, false);
+  $window.addEventListener("online", function () {
+    $rootScope.$apply(function() {
+      $rootScope.online = true;
+    });
+  }, false);
+}
+
 
 angular.module('noodle', ['ui.router', 'app.controllers'])
 .config(['$stateProvider', '$urlRouterProvider', configure_states])
+.run(run);
