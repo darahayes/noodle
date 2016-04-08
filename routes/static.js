@@ -1,17 +1,17 @@
-var _ = require('lodash');
-var Joi = require('joi');
-var Boom = require('boom');
-
 exports.register = function(server, options, next) {
-  options = {
-    basePath: '/static'
-  };
+  
+  server.route({
+      method: 'GET',
+      path: '/{param*}',
+      handler: {
+          directory: {
+              path: '../public',
+              listing: true,
+              index: ['index.html']
+          }
+      }
+  });
 
-  var routes = [
-
-  ];
-
-  server.route(routes);
   next();
 };
 

@@ -1,53 +1,37 @@
-var Chairo = require('chairo');
-var Hapi = require('hapi');
-var options = require('./config');
-var boom = require('boom');
-var jwt = require('hapi-auth-jwt2');
+const Inert = require('inert');
+const Chairo = require('chairo');
+const Hapi = require('hapi');
+const Options = require('./config');
 
-//connection options
-var server = new Hapi.Server();
-server.connection({
-  port: 4000,
-  routes: {
-    cors: {
-      additionalExposedHeaders: ['Authorization', 'authorization'],
-      credentials: true
-    }
-  }
-});
-// server.ext('onPreResponse', cors);
+//connection Options
+const server = new Hapi.Server(Options.serverConfig);
 
-
-
-function checkHapiPluginError(error) {
-  if (error) {
-    console.log('An error occurred while loading a hapi plugin');
-    throw error;
-  }
-}
+server.connection(Options.connectionConfig);
 
 // Register plugins
-var plugins = [{register: Chairo}, {register: jwt}];
+const plugins = [
+  {
+    register: Chairo
+  },
+  {
+    register: Inert
+  }
+];
 
-server.register(plugins, function(err) {
+server.register(plugins, (err) => {
   checkHapiPluginError(err);
-  var seneca = server.seneca;
+  const seneca = server.seneca;
 
   seneca
-    .use('mongo-store', options.mongo)
+    .use('mongo-store', Options.mongo)
     .use('user');
 
-  server.auth.strategy('jwt', 'jwt', {
-    key: options.jwtKey,
-    validateFunc: authenticate
-  });
-
-  seneca.ready(function(err) {
-    server.register(require('./routes/event_forms'), function(err) {
+  seneca.ready((err) => {
+    server.register(require('./routes/event_forms'), (err) => {
       checkHapiPluginError(err);
     });
 
-    server.register(require('./routes/auth'), function(err) {
+    server.register(require('./routes/static'), (err) => {
       checkHapiPluginError(err);
     });
 
@@ -57,19 +41,10 @@ server.register(plugins, function(err) {
   });
 });
 
-function authenticate(decoded, request, cb) {
-  // console.log(request)
-  console.log('Decoded', decoded)
-  var token = decoded;
-  request.seneca.act({
-    role: 'user',
-    cmd: 'auth',
-    token: token
-  }, function(err, resp) {
-    if (err) return cb(null, err);
-    if (resp.ok === false) {
-      return cb(null, false)
-    }
-    return cb(null, true)
-  });
+
+function checkHapiPluginError(error) {
+  if (error) {
+    console.log('An error occurred while loading a hapi plugin');
+    throw error;
+  }
 }

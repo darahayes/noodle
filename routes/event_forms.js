@@ -11,28 +11,18 @@ exports.register = function(server, options, next) {
     method: 'POST',
     path: options.basePath,
     config: {
-      auth: 'jwt',
-      // validate: {
-      //   payload: {
-      //     name: Joi.string().required(),
-      //     category: Joi.string().valid('Resistance', 'Cardio').required(),
-      //     tags: Joi.array().items(Joi.string()).required().min(1)
-      //   }
-      // },
       handler: save_event_form
     }
   }, {
     method: 'GET',
     path: options.basePath,
     config: {
-      auth: 'jwt',
       handler: list_event_forms
     }
   }, {
     method: 'DELETE',
     path: options.basePath,
     config: {
-      auth: 'jwt',
       handler: remove_event_form
     }
   }];
