@@ -1,6 +1,8 @@
-const Inert = require('inert');
-const Chairo = require('chairo');
 const Hapi = require('hapi');
+const Chairo = require('chairo');
+const Inert = require('inert');
+const Bell = require('bell');
+const Hapi_Cookie = require('hapi-auth-cookie');
 const Options = require('./config');
 
 //connection Options
@@ -15,6 +17,12 @@ const plugins = [
   },
   {
     register: Inert
+  },
+  {
+    register: Bell
+  },
+  {
+    register: Hapi_Cookie
   }
 ];
 
@@ -24,7 +32,8 @@ server.register(plugins, (err) => {
 
   seneca
     .use('mongo-store', Options.mongo)
-    .use('user');
+    .use('user')
+    .use('auth', {restrict: '/api'})
 
   seneca.ready((err) => {
     server.register(require('./routes/event_forms'), (err) => {
