@@ -1,0 +1,26 @@
+<h3>Events</h3>
+<ul>
+<li class="animated fadeInDown" ng-repeat="item in items">
+  <div class="col s6 m6">
+    <div class="card grey lighten-5">
+      <div class="card-content black-text">
+        <span class="card-title activator grey-text text-darken-4">{{item}}<i class="material-icons right">info_outline</i></span>
+          <p>I am a very simple card. I am good at containing small bits of information.I am convenient because I require little markup to use effectively.</p>
+      </div>
+      <div class="card-action">
+        <a class="blue-text" href="#">This is a link</a>
+        <a class="blue-text" href="#">This is a link</a>
+      </div>
+      <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+          <p>Here is some more information about this product that is only revealed once clicked on.</p>
+      </div>
+    </div>
+  </div>
+  </li>
+</ul>
+<div class="fixed-action-btn tooltipped" data-position="left" data-delay="50" data-tooltip="New Event" style="bottom: 30px; right: 30px;">
+  <a ui-sref="app.new_event" class="btn-floating btn-large blue">
+    <i class="large material-icons">add</i>
+  </a>
+</div>

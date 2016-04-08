@@ -8,22 +8,22 @@ function configure_states($stateProvider, $urlRouterProvider) {
     controller: 'app_control'
   })
 
-  .state('app.state0', {
+  .state('app.events', {
     url: '/home',
     views: {
       viewContent: {
-        templateUrl: 'templates/view0.html',
-        controller: 'state0_control'
+        templateUrl: 'templates/events.html',
+        controller: 'events_control'
       }
     }
   })
 
-  .state('app.state1', {
-    url: '/home2',
+  .state('app.new_event', {
+    url: '/event/new',
     views: {
       viewContent: {
-        templateUrl: 'templates/view1.html',
-        controller: 'state1_control'
+        templateUrl: 'templates/new_event.html',
+        controller: 'new_event_control'
       }
     }
   })

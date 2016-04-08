@@ -1,0 +1,148 @@
+<h3>New Event</h3>
+<div class="animated fadeInDown">
+  <div class="card grey lighten-5">
+    <div class="card-content black-text">
+      <span class="card-title">Event Overview</span>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="event_title" type="text" class="validate" ng-model="event.overview.data[0].text" required="true" data-error"This is required">
+              <label for="event_title">Event Title</label>
+            </div>
+          </div>
+    </div>
+    <div class="card-action">
+      <a data-target="modal1" class="waves-effect waves-teal btn modal-trigger blue" href="#modal1"><i class="material-icons left">add</i>Detail</a>
+    </div>
+  </div>
+
+
+  <div class="card grey lighten-5">
+    <div class="card-content grey-text">
+      <span class="card-title black-text">Attendees</span>
+      <p>Max attendees</p>
+      <p class="range-field">
+        <input type="range" id="test5" min="0" max="1000" ng-model="event.attendees_meta.maxNo"/>
+      </p>
+      <p>
+        <input type="checkbox" id="lunchBox" ng-model="event.attendees_meta.request_lunch" />
+        <label for="lunchBox">Is lunch provided?</label>
+      </p>
+      <p>
+        <input type="checkbox" id="positionBox" ng-model="event.attendees_meta.request_position"/>
+        <label for="positionBox">Can attendees request a position?</label>
+      </p>
+      <div id="positions" ng-show="event.attendees_meta.request_position">
+        <div class="row"></div>
+        <hr>
+        <div class="row"></div>
+        <div class="row">
+          <div class="col 1">
+            <p>Positions</p>
+          </div>
+        </div>
+
+        <ul class="collection" ng-show="event.attendees_meta.positions > 0">
+          <li ng-repeat="position in event.attendees_meta.positions" class="collection-item">Alvin</li>
+        </ul>
+                
+        <a data-target="modal2" class="waves-effect waves-teal btn modal-trigger blue"><i class="material-icons left">add</i>Position</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card grey lighten-5">
+    <div class="card-content grey-text">
+      <span class="card-title black-text">Offerings</span>
+          <div class="row">
+            <div class="col">
+            <p>Are there multiple dates for this event?</p>
+            </div>
+            <div class="col">
+              <!-- Switch -->
+                <div class="switch">
+                  <label>
+                    No
+                    <input type="checkbox" ng-model="event.offerings.meta.visible">
+                    <span class="lever"></span>
+                    Yes
+                  </label>
+                </div>
+            </div>
+          </div>
+          <div id="offerings-list" ng-show="event.offerings.meta.visible">
+            <div class="row" ng-repeat="offering in event.offerings.data track by $index" on-last-repeat>
+              <div class="col">
+              <p>{{$index+1}}</p>
+              </div>
+              <div class="input-field col">
+                <i class="material-icons prefix grey-text">date_range</i>
+                <input elem-loaded="console.log('date picker loaded')" id="date{{$index}}" type="date" class="datepicker">
+                <label for="date{{$index}}"></label>
+              </div>
+            </div>
+          </div>
+    </div>
+    <div class="card-action" ng-show="event.offerings.meta.visible">
+      <a class="waves-effect waves-teal btn blue" ng-click="add_offering()"><i class="material-icons left">add</i>Offering</a>
+    </div>
+  </div>
+
+
+<!-- End of Page -->
+</div>
+
+<div class="fixed-action-btn tooltipped" data-position="left" data-delay="50" data-tooltip="New Event" style="bottom: 30px; right: 30px;">
+  <a ui-sref="app.new_event" class="btn-floating btn-large blue">
+    <i class="large material-icons">save</i>
+  </a>
+</div>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.modal-trigger').leanModal(); 
+  });     
+</script>
+
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <h4>Add Detail</h4>
+    <div class="input-field col s6">
+      <input id="modal_text" type="text">
+      <label for="modal_text">Text</label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a ng-click="" class="modal-action modal-close waves-effect waves-green btn-flat">Save</a>
+    <a href="" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+  </div>
+</div>
+
+<div id="modal2" class="modal">
+  <div class="modal-content">
+    <h4>Add Position</h4>
+    <div class="input-field col s6">
+      <input id="modal_text" type="text">
+      <label for="modal_text">Position</label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a ng-click="" class="modal-action modal-close waves-effect waves-green btn-flat">Save</a>
+    <a href="" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+  </div>
+</div>
+
+<div id="modal3" class="modal">
+  <div class="modal-content">
+    <h4>Add Offering</h4>
+    <input type="date" class="datepicker">
+  </div>
+  <div class="modal-footer">
+    <a ng-click="" class="modal-action modal-close waves-effect waves-green btn-flat">Save</a>
+    <a href="" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+  </div>
+</div>
+      
