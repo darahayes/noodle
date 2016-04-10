@@ -16,7 +16,8 @@ module.exports = {
     }
   },
   connectionConfig: {
-    port: 4000,
+    host: process.env.HOST || 'localhost',
+    port: process.env.PORT || 4000,
     routes: {
       cors: {
         additionalExposedHeaders: ['Authorization', 'authorization'],

@@ -1,4 +1,4 @@
-<h3>New Event</h3>
+<h3>{{title}}</h3>
 <div class="animated fadeInDown">
   <div class="card grey lighten-5">
     <div class="card-content black-text">
@@ -10,7 +10,7 @@
         <div class="row" ng-show="event.overview.meta.visible">
           <div class="input-field col s12">
             <input id="event_title" type="text" class="validate" ng-model="event.overview.data[0].text" required="true" data-error"This is required">
-            <label for="event_title">Event Title</label>
+            <label ng-hide="event.overview.data[0].text" for="event_title">Event Title</label>
           </div>
           <div class="input-field col s12" ng-repeat="item in event.overview.data.slice(1, (event.overview.data.length)) track by $index">
             <input id="event_detail_{{$index}}" type="text" class="validate" ng-model="event.overview.data[$index+1].text" required="true" data-error"This is required">
@@ -139,11 +139,15 @@
 <!-- End of Page -->
 </div>
 
-<div class="fixed-action-btn tooltipped" data-position="left" data-delay="50" data-tooltip="New Event" style="bottom: 30px; right: 30px;">
-  <a ui-sref="app.new_event" class="btn-floating btn-large blue">
-    <i class="large material-icons">save</i>
-  </a>
-</div>
+<div class="fixed-action-btn horizontal" style="bottom: 30px; right: 30px;">
+    <a class="btn-floating btn-large blue">
+      <i class="large material-icons">mode_edit</i>
+    </a>
+    <ul>
+      <li><a ng-click="deleteEvent()" class="btn-floating red"><i class="material-icons">delete</i></a></li>
+      <li><a ng-click="saveEvent()" class="btn-floating green"><i class="material-icons">save</i></a></li>
+    </ul>
+  </div>
 
 
 
@@ -160,7 +164,7 @@
   <div class="modal-content">
     <h4>Add Detail</h4>
     <div class="input-field col s6">
-      <input id="detail_input" type="text">
+      <input autofocus id="detail_input" type="text">
       <label for="detail_input">Text</label>
     </div>
   </div>
@@ -174,7 +178,7 @@
   <div class="modal-content">
     <h4>Add Position</h4>
     <div class="input-field col s6">
-      <input id="position_input" type="text">
+      <input autofocus id="position_input" type="text">
       <label for="position_input">Position</label>
     </div>
   </div>

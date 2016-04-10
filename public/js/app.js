@@ -1,4 +1,4 @@
-function configure_states($stateProvider, $urlRouterProvider) {
+function configure_states($stateProvider, $urlRouterProvider, $localStorage) {
   $stateProvider
 
   .state('app', {
@@ -18,12 +18,27 @@ function configure_states($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('app.new_event', {
-    url: '/event/new',
+  .state('app.event', {
+    url: '/event/:index',
     views: {
       viewContent: {
         templateUrl: 'templates/new_event.html',
         controller: 'new_event_control'
+      }
+    },
+    resolve: {
+      event: function($stateParams, $localStorage) {
+        console.log('index', $stateParams.index);
+        console.log('events', $localStorage.events)
+        console.log('event', $localStorage.events[$stateParams.index])
+        if ($stateParams.index >= 0 && $stateParams.index < $localStorage.events.length) {
+          console.log('selected valid index')
+          return $localStorage.events[$stateParams.index];
+        }
+        else {
+          console.log('Invalid Event Selection')
+          return null;
+        }
       }
     }
   })
@@ -49,6 +64,6 @@ function run($window, $rootScope) {
 }
 
 
-angular.module('noodle', ['ui.router', 'app.controllers'])
+angular.module('noodle', ['ui.router', 'app.controllers', 'ngStorage', 'app.EventServiceModule'])
 .config(['$stateProvider', '$urlRouterProvider', configure_states])
 .run(run);

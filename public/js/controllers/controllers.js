@@ -1,46 +1,72 @@
-angular.module('app.controllers', [])
+angular.module('app.controllers', ['app.EventServiceModule', 'ngStorage'])
 
 .controller('app_control', function($scope) {
   $scope.title = 'Noodle';
 })
 
-.controller('events_control', function($scope) {
-  $scope.items = ["A", "List", "Of", "Events"];
+.controller('events_control', function($scope, eventService, $localStorage) {
+  $scope.events = [];
+  
+  eventService.get(function(err, events) {
+    console.log(events)
+    $scope.events = events || $localStorage.events;
+  });
+
+  $scope.untitled = 'Untitled Event';
+
+  $scope.removeEvent = function(event) {
+    eventService.remove(event, function(err) {
+      if (!err) {
+        Materialize.toast('Event Removed', 2000)
+        $localStorage.events = $localStorage.events.splice(event.index, 1);
+        // $scope.events = $localStorage.events
+      } else {
+        Materialize.toast('Oops! Something went wrong.', 2000)
+      }
+    })
+  }
+
+  //Fancy function to get time since modification
+  $scope.timeSince = function(date) {
+
+      var seconds = Math.floor((new Date() - new Date(date)) / 1000);
+
+      var interval = Math.floor(seconds / 31536000);
+
+      if (interval > 1) {
+          return interval + " years";
+      }
+      interval = Math.floor(seconds / 2592000);
+      if (interval > 1) {
+          return interval + " months";
+      }
+      interval = Math.floor(seconds / 86400);
+      if (interval > 1) {
+          return interval + " days";
+      }
+      interval = Math.floor(seconds / 3600);
+      if (interval > 1) {
+          return interval + " hours";
+      }
+      interval = Math.floor(seconds / 60);
+      if (interval > 1) {
+          return interval + " minutes";
+      }
+      return Math.floor(seconds) + " seconds";
+  }
+
 })
 
-.controller('new_event_control', function($scope) {
+.controller('new_event_control', function($scope, eventService, $state, event) {
 
-  $scope.event = {
-    overview: {
-      meta: {
-        "visible": true,
-        "css": "b_solid rl_bkg_color_green rl_rcorners25",
-        "style": "font-size:1em"
-      },
-      data: [
-        {
-          "visible": true,
-          "text": "",
-          "css": "rl_text_color_black    text-center rl_font_2_5  ",
-          "style": ""
-        }
-      ]
-    },
-    attendees_meta: {
-      maxNo: 10,
-      request_lunch: true,
-      request_position: true,
-      positions: [
-      ]
-    },
-    offerings: {
-      meta: {
-        visible: false,
-      },
-      data: [
-        
-      ]
-    }
+  console.log('Input Event');
+  if (event) {
+    $scope.title = 'Update Event';
+    $scope.event = event
+  }
+  else {
+    $scope.title = 'New Event';
+    $scope.event = eventService.getBlankEvent()
   }
 
   $scope.addOverviewDetail = function($event) {
@@ -64,7 +90,36 @@ angular.module('app.controllers', [])
   }
 
   $scope.saveEvent = function() {
-    eventService.saveEvent();
+    $scope.event.name = $scope.event.overview.data[0].text
+    $scope.event.nameLowercase = String.toLowerCase($scope.event.name);
+    eventService.save($scope.event, function(err, event) {
+    if (err) { 
+    /*Toast*/ 
+    }
+    else {
+      console.log('event saved')
+      $scope.event = event;
+      Materialize.toast('Event Saved', 2000);
+    }
+
+    });
+  }
+
+  $scope.deleteEvent = function() {
+    console.log('delete event called');
+    if ($scope.event.id) {
+      eventService.remove($scope.event, function(err) {
+        if (err) {
+          Materialize.toast('Oops! Something went wrong', 2000);
+        }
+        else {
+          Materialize.toast('Event Deleted', 2000);
+        }
+        $state.go('app.events');
+      });
+    } else {
+      $state.go('app.events');
+    }
   }
 
   //reload the damn date picker when a new event offering is added innit

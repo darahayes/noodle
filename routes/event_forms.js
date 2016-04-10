@@ -4,7 +4,7 @@ var Boom = require('boom');
 
 exports.register = function(server, options, next) {
   options = {
-    basePath: '/api/exercises'
+    basePath: '/api/events'
   };
 
   var routes = [
@@ -13,6 +13,13 @@ exports.register = function(server, options, next) {
       path: options.basePath,
       config: {
         handler: save_event_form
+      }
+    },
+    {
+      method: 'PUT',
+      path: options.basePath,
+      config: {
+        handler: update_event_form
       }
     },
     {
@@ -26,38 +33,62 @@ exports.register = function(server, options, next) {
       method: 'DELETE',
       path: options.basePath,
       config: {
-        handler: remove_event_form
+        handler: remove_event_form,
+        validate: {
+          query: {
+            id : Joi.string().required()
+          }
+        }
       }
     }
   ];
 
+  function update_event_form(request, reply) {
+    console.log('Update Event');
+    var event = request.payload;
+    request.seneca.make('sys/events').load$({id: event.id}, (err, entity) => {
+      if (err) { 
+        reply(Boom.notFound('Event not Found'));
+      } else {
+        event.lastModified = new Date();
+        entity.data$(event);
+        entity.save$(function(err, saved) {
+          if (err) {
+            console.log(err);
+            return reply(Boom.expectationFailed('An error occurred'));
+          }
+          console.log('Entity Updated', saved);
+          reply(saved);
+        })
+      }
+    })
+  }
+
   function save_event_form(request, reply) {
-    console.log('\n\n\n\nPARAMS\n\n\n\n', request.payload);
-    var msg = _.extend({
-      role: 'exercises',
-      cmd: 'save',
-      created_by: request.auth.credentials.user
-    }, request.payload);
-    request.seneca.act(msg, function(err, out) {
-      if (err) return reply(Boom.expectationFailed('Error Saving Exercise'));
-      return reply(out);
-    });
+    var event = request.payload;
+    event.lastModified = new Date();
+    request.seneca.make('sys/events').data$(request.payload).save$((err, saved) => {
+      console.log('saved', saved)
+      if (err) { return reply(err) }
+        return reply(saved);
+    })
   }
 
   function list_event_forms(request, reply) {
-    var user = (request.auth.credentials) ? request.auth.credentials.user : null
-    return reply.act({
-      role: 'exercises',
-      cmd: 'list',
-      created_by: user
+    request.seneca.make('sys/events').list$((err, result) => {
+      if (err) { return reply(err) }
+        console.log(result);
+        return reply(result);
     });
   }
 
   function remove_event_form(request, reply) {
-    return reply.act({
-      role: 'exercises',
-      cmd: 'remove_exercises',
-      user: request.auth.credentials.user
+    console.log('Remove event');
+    var event_id = request.query.id;
+    request.seneca.make('sys/events').remove$({id: event_id}, (err, result) => {
+      if (err) { return reply(err) }
+        console.log(result)
+        return reply(result);
     });
   }
 

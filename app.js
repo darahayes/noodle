@@ -44,6 +44,14 @@ server.register(plugins, (err) => {
       checkHapiPluginError(err);
     });
 
+    server.route({
+        method: 'GET',
+        path: '/api/hello',
+        handler: function (request, reply) {
+            reply('Hello, world!');
+        }
+    });
+
     server.start(() => {
       console.log('Server running at:', server.info.uri);
     });
