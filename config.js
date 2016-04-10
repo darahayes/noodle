@@ -3,8 +3,8 @@ const Path = require('path');
 module.exports = {
   mongo: {
     name: 'noodle',
-    host: '127.0.0.1',
-    port: 27017
+    host: process.env.MONGO_HOST: '127.0.0.1',
+    port: process.env.MONGO_PORT: 27017
   },
   serverConfig: {
     connections: {
