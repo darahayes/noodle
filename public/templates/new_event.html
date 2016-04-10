@@ -107,9 +107,6 @@
               <input type="range" id="test5" min="1" max="5" ng-model="event.offerings.meta.columns"/>
             </p>
             <div class="row" ng-repeat="offering in event.offerings.data track by $index" on-last-repeat>
-              <div class="col">
-              <p>{{$index+1}}</p>
-              </div>
               <div class="input-field col">
                 <i class="material-icons prefix grey-text">date_range</i>
                 <input id="date{{$index}}" type="text" class="datepicker" ng-model="event.offerings.data[$index].lines[0].text">
