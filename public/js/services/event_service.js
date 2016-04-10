@@ -88,7 +88,7 @@ angular.module('app.EventServiceModule', ['ngStorage'])
       offerings: {
         meta: {
           visible: false,
-          columns: 3,
+          columns: 1,
           columnCss: " b_solid rl_bkg_color_blue1 rl_rcorners25",
           columnStyle: "padding-bottom:10px;  ",
           itemCss:  " rl_rcorners15 rl_brd_clr_black rl_brd_solid rl_box_shadow1 rl_margin_top_10",
@@ -102,7 +102,10 @@ angular.module('app.EventServiceModule', ['ngStorage'])
         meta: {
           ui_text_to_display: '',
           sectorNo_text: '',
-          enabled: false
+          enabled: false,
+          template: 'organisation_minimum',
+          allowChooser: true,
+          allowCountyFilter: true
         }
       }
     }

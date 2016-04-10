@@ -1,11 +1,12 @@
 <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Noodle</a>
+    <div class="nav-wrapper container"><a id="logo-container" ui-sref="app.events" class="brand-logo">Noodle</a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="#">Login</a></li>
+        <li><a ui-sref="app.events">Home</a></li>
       </ul>
 
       <ul id="nav-mobile" class="side-nav">
-        <li><a href="#">Login</a></li>
+        <li><a ui-sref="app.events">Events</a></li>
+        <li><a ui-sref="app.event">New Event</a></li>
       </ul>
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
@@ -13,5 +14,8 @@
   <div class="container" ui-view="viewContent"></div>
 
 <script type="text/javascript">
-  $(".button-collapse").sideNav();
+  $(".button-collapse").sideNav({
+    menuWidth: 150,
+    closeOnClick: true
+  });
 </script>

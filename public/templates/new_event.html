@@ -7,14 +7,21 @@
           <input type="checkbox" id="overviewVisible" ng-model="event.overview.meta.visible"/>
           <label for="overviewVisible">Should the event overview be visible?</label>
         </p>
-        <div class="row" ng-show="event.overview.meta.visible">
+        <div ng-show="event.overview.meta.visible">
           <div class="input-field col s12">
             <input id="event_title" type="text" class="validate" ng-model="event.overview.data[0].text" required="true" data-error"This is required">
             <label ng-hide="event.overview.data[0].text" for="event_title">Event Title</label>
           </div>
-          <div class="input-field col s12" ng-repeat="item in event.overview.data.slice(1, (event.overview.data.length)) track by $index">
-            <input id="event_detail_{{$index}}" type="text" class="validate" ng-model="event.overview.data[$index+1].text" required="true" data-error"This is required">
-          </div>
+          <div ng-show="event.overview.data.length > 1">
+            <div class="row">
+              <div class="col">
+                <p>Event Details</p>
+              </div>
+            </div>
+            <ul class="collection">
+              <li ng-repeat="item in event.overview.data.slice(1, (event.overview.data.length)) track by $index "class="collection-item"><div>{{event.overview.data[$index+1].text}}<a ng-click="event.overview.data.splice($index+1, 1)" class="secondary-content"><i class="material-icons">delete</i></a></div></li>
+            </ul>
+          </div>     
         </div>
     </div>
     <div class="card-action" ng-show="event.overview.meta.visible">
@@ -72,8 +79,8 @@
               <p>Positions</p>
             </div>
           </div>
-          <ul class="collection">
-            <li ng-repeat="position in event.attendees_meta.positions" class="collection-item">{{position.name}}</li>
+          <ul class="collection" ng-show="event.overview.data.length > 1">
+            <li ng-repeat="position in event.attendees_meta.positions" class="collection-item"><div>{{position.name}}<a ng-click="event.attendees_meta.positions.splice($index, 1)" class="secondary-content"><i class="material-icons">delete</i></a></div></li>
           </ul>
         </div>
                 
@@ -115,14 +122,6 @@
                 <i class="material-icons prefix grey-text">info_outline</i>
                 <input id="offering_info" type="text" class="validate" required="true" ng-model="event.offerings.data[$index].lines[1].text">
                 <label ng-hide="event.offerings.data[$index].lines[1].text" for="offering_info">Offering Info</label>
-              </div>
-              <div class="input-field col">
-                  <select class="browser-default">
-                    <option value="" disabled selected>Choose your option</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                    <option value="3">Option 3</option>
-                  </select>
               </div> 
             </div>
           </div>
