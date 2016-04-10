@@ -33,17 +33,17 @@
       <div class="col">
         <p>
           <input type="checkbox" id="needOrgDetails" ng-model="event.organisation.meta.enabled"/>
-          <label for="needOrgDetails">Will the attendees come from an organization e.g. a school, college, union etc.?</label>
+          <label for="needOrgDetails">Will the attendees come from an organisation e.g. a school, college, union etc.?</label>
         </p>
       </div>
         <div class="input-field col s12" ng-show="event.organisation.meta.enabled">
-          <input id="org_type" type="text" class="validate" ng-model="event.organization.meta.ui_text_to_display" required="true" data-error"This is required">
-          <label for="org_type">Organization Type</label>
+          <input id="org_type" type="text" class="validate" ng-model="event.organisation.meta.ui_text_to_display" required="true" data-error"This is required">
+          <label for="org_type">Organisation Type</label>
         </div>
       <div ng-show="event.organisation.meta.enabled">
         <div class="input-field col s12">
-          <input id="org_type" type="text" class="validate" ng-model="event.organization.meta.ui_text_to_display" required="true" data-error"This is required">
-          <label for="org_type">Identifier</label>
+          <input id="identifier" type="text" class="validate" ng-model="event.organisation.meta.sectorNo_text" required="true" data-error"This is required">
+          <label for="identifier">Identifier</label>
         </div>
         <div class="input-field col s12">
           <p>e.g. 'Staff Number, Student Number etc'</p>
@@ -104,7 +104,7 @@
           <div id="offerings-list" ng-show="event.offerings.meta.visible">
             <p>No.Columns</p>
             <p class="range-field">
-              <input type="range" id="test5" min="0" max="5" ng-model="event.offerings.meta.columns"/>
+              <input type="range" id="test5" min="1" max="5" ng-model="event.offerings.meta.columns"/>
             </p>
             <div class="row" ng-repeat="offering in event.offerings.data track by $index" on-last-repeat>
               <div class="col">
@@ -112,7 +112,7 @@
               </div>
               <div class="input-field col">
                 <i class="material-icons prefix grey-text">date_range</i>
-                <input elem-loaded="console.log('date picker loaded')" id="date{{$index}}" type="date" class="datepicker" ng-model="event.offerings.data[$index].lines[0].text">
+                <input id="date{{$index}}" type="text" class="datepicker" ng-model="event.offerings.data[$index].lines[0].text">
               </div>
               <div class="input-field col">
                 <i class="material-icons prefix grey-text">info_outline</i>

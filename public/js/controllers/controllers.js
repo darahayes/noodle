@@ -14,11 +14,12 @@ angular.module('app.controllers', ['app.EventServiceModule', 'ngStorage'])
 
   $scope.untitled = 'Untitled Event';
 
-  $scope.removeEvent = function(event) {
-    eventService.remove(event, function(err) {
+  $scope.removeEvent = function(index) {
+    console.log('Remove index', index);
+    eventService.remove($scope.events[index], function(err) {
       if (!err) {
-        Materialize.toast('Event Removed', 2000)
-        $localStorage.events = $localStorage.events.splice(event.index, 1);
+        Materialize.toast('Event Deleted', 2000)
+        $scope.events.splice(index, 1);
         // $scope.events = $localStorage.events
       } else {
         Materialize.toast('Oops! Something went wrong.', 2000)
@@ -57,7 +58,7 @@ angular.module('app.controllers', ['app.EventServiceModule', 'ngStorage'])
 
 })
 
-.controller('new_event_control', function($scope, eventService, $state, event) {
+.controller('new_event_control', function($scope, eventService, $state, event, index) {
 
   console.log('Input Event');
   if (event) {
@@ -134,7 +135,16 @@ angular.module('app.controllers', ['app.EventServiceModule', 'ngStorage'])
   $scope.add_offering = function() {
     var offering = {
       visible: true,
-      lines: []
+      lines: [
+        {
+          text: '',
+          'css': 'rl_padding_left_15 rl_font_1_5'
+        },
+        {
+          text: '',
+          css: 'rl_padding_left_15 rl_font_1_2'
+        }
+      ]
     }
     $scope.event.offerings.data.push(offering)
   }

@@ -39,6 +39,9 @@ function configure_states($stateProvider, $urlRouterProvider, $localStorage) {
           console.log('Invalid Event Selection')
           return null;
         }
+      },
+      index: function($stateParams) {
+        return $stateParams.index
       }
     }
   })
