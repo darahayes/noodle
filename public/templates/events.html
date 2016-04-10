@@ -5,7 +5,6 @@
     <div class="card grey lighten-5">
       <div class="card-content black-text">
         <span ui-sref="app.event({index: $index})" class="card-title activator grey-text text-darken-4">{{event.name || untitled}}</span><a class="waves-effect waves-teal btn-flat right" ng-click="removeEvent($index)"><i class="material-icons right">delete</i></a>
-          <p>I am a very simple card. I am good at containing small bits of information.I am convenient because I require little markup to use effectively.</p>
       </div>
       <div class="card-action grey-text">
         <p>Last modified: {{timeSince(event.lastModified)}}</p>
