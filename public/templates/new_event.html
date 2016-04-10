@@ -3,22 +3,53 @@
   <div class="card grey lighten-5">
     <div class="card-content black-text">
       <span class="card-title">Event Overview</span>
-          <div class="row">
-            <div class="input-field col s12">
-              <input id="event_title" type="text" class="validate" ng-model="event.overview.data[0].text" required="true" data-error"This is required">
-              <label for="event_title">Event Title</label>
-            </div>
+        <p>
+          <input type="checkbox" id="overviewVisible" ng-model="event.overview.meta.visible"/>
+          <label for="overviewVisible">Should the event overview be visible?</label>
+        </p>
+        <div class="row" ng-show="event.overview.meta.visible">
+          <div class="input-field col s12">
+            <input id="event_title" type="text" class="validate" ng-model="event.overview.data[0].text" required="true" data-error"This is required">
+            <label for="event_title">Event Title</label>
           </div>
+          <div class="input-field col s12" ng-repeat="item in event.overview.data.slice(1, (event.overview.data.length)) track by $index">
+            <input id="event_detail_{{$index}}" type="text" class="validate" ng-model="event.overview.data[$index+1].text" required="true" data-error"This is required">
+          </div>
+        </div>
     </div>
-    <div class="card-action">
+    <div class="card-action" ng-show="event.overview.meta.visible">
       <a data-target="modal1" class="waves-effect waves-teal btn modal-trigger blue" href="#modal1"><i class="material-icons left">add</i>Detail</a>
     </div>
   </div>
 
-
   <div class="card grey lighten-5">
     <div class="card-content grey-text">
-      <span class="card-title black-text">Attendees</span>
+    <span class="card-title black-text">Attendees</span>
+    <p>
+      <input type="checkbox" id="needContactDetails" ng-model="event.contact.meta.enabled"/>
+      <label for="needContactDetails">Do you want attendee contact information?</label>
+    </p>
+    <div class="row">
+      <div class="col">
+        <p>
+          <input type="checkbox" id="needOrgDetails" ng-model="event.organisation.meta.enabled"/>
+          <label for="needOrgDetails">Will the attendees come from an organization e.g. a school, college, union etc.?</label>
+        </p>
+      </div>
+        <div class="input-field col s12" ng-show="event.organisation.meta.enabled">
+          <input id="org_type" type="text" class="validate" ng-model="event.organization.meta.ui_text_to_display" required="true" data-error"This is required">
+          <label for="org_type">Organization Type</label>
+        </div>
+      <div ng-show="event.organisation.meta.enabled">
+        <div class="input-field col s12">
+          <input id="org_type" type="text" class="validate" ng-model="event.organization.meta.ui_text_to_display" required="true" data-error"This is required">
+          <label for="org_type">Identifier</label>
+        </div>
+        <div class="input-field col s12">
+          <p>e.g. 'Staff Number, Student Number etc'</p>
+        </div>
+      </div>
+    </div>
       <p>Max attendees</p>
       <p class="range-field">
         <input type="range" id="test5" min="0" max="1000" ng-model="event.attendees_meta.maxNo"/>
@@ -35,15 +66,16 @@
         <div class="row"></div>
         <hr>
         <div class="row"></div>
-        <div class="row">
-          <div class="col 1">
-            <p>Positions</p>
+        <div ng-show="(event.attendees_meta.positions.length > 0)">
+          <div class="row">
+            <div class="col 1">
+              <p>Positions</p>
+            </div>
           </div>
+          <ul class="collection">
+            <li ng-repeat="position in event.attendees_meta.positions" class="collection-item">{{position.name}}</li>
+          </ul>
         </div>
-
-        <ul class="collection" ng-show="event.attendees_meta.positions > 0">
-          <li ng-repeat="position in event.attendees_meta.positions" class="collection-item">Alvin</li>
-        </ul>
                 
         <a data-target="modal2" class="waves-effect waves-teal btn modal-trigger blue"><i class="material-icons left">add</i>Position</a>
       </div>
@@ -70,15 +102,31 @@
             </div>
           </div>
           <div id="offerings-list" ng-show="event.offerings.meta.visible">
+            <p>No.Columns</p>
+            <p class="range-field">
+              <input type="range" id="test5" min="0" max="5" ng-model="event.offerings.meta.columns"/>
+            </p>
             <div class="row" ng-repeat="offering in event.offerings.data track by $index" on-last-repeat>
               <div class="col">
               <p>{{$index+1}}</p>
               </div>
               <div class="input-field col">
                 <i class="material-icons prefix grey-text">date_range</i>
-                <input elem-loaded="console.log('date picker loaded')" id="date{{$index}}" type="date" class="datepicker">
-                <label for="date{{$index}}"></label>
+                <input elem-loaded="console.log('date picker loaded')" id="date{{$index}}" type="date" class="datepicker" ng-model="event.offerings.data[$index].lines[0].text">
               </div>
+              <div class="input-field col">
+                <i class="material-icons prefix grey-text">info_outline</i>
+                <input id="offering_info" type="text" class="validate" required="true" ng-model="event.offerings.data[$index].lines[1].text">
+                <label ng-hide="event.offerings.data[$index].lines[1].text" for="offering_info">Offering Info</label>
+              </div>
+              <div class="input-field col">
+                  <select class="browser-default">
+                    <option value="" disabled selected>Choose your option</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                  </select>
+              </div> 
             </div>
           </div>
     </div>
@@ -102,6 +150,7 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $('.modal-trigger').leanModal(); 
+    $('select').material_select();
   });     
 </script>
 
@@ -111,12 +160,12 @@
   <div class="modal-content">
     <h4>Add Detail</h4>
     <div class="input-field col s6">
-      <input id="modal_text" type="text">
-      <label for="modal_text">Text</label>
+      <input id="detail_input" type="text">
+      <label for="detail_input">Text</label>
     </div>
   </div>
   <div class="modal-footer">
-    <a ng-click="" class="modal-action modal-close waves-effect waves-green btn-flat">Save</a>
+    <a ng-click="addOverviewDetail($event)" class="modal-action modal-close waves-effect waves-green btn-flat">Save</a>
     <a href="" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
   </div>
 </div>
@@ -125,12 +174,12 @@
   <div class="modal-content">
     <h4>Add Position</h4>
     <div class="input-field col s6">
-      <input id="modal_text" type="text">
-      <label for="modal_text">Position</label>
+      <input id="position_input" type="text">
+      <label for="position_input">Position</label>
     </div>
   </div>
   <div class="modal-footer">
-    <a ng-click="" class="modal-action modal-close waves-effect waves-green btn-flat">Save</a>
+    <a ng-click="addPosition()" class="modal-action modal-close waves-effect waves-green btn-flat">Save</a>
     <a href="" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
   </div>
 </div>

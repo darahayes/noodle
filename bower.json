@@ -19,6 +19,8 @@
   "dependencies": {
     "angular": "1.5.0",
     "angular-ui-router": "^0.2.18",
-    "lumx": "^0.3.96"
+    "lumx": "^0.3.96",
+    "ngstorage": "^0.3.10",
+    "sc-date-time": "^1.1.6"
   }
 }

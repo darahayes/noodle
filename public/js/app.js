@@ -38,11 +38,13 @@ function run($window, $rootScope) {
     $rootScope.$apply(function() {
       $rootScope.online = false;
     });
+    Materialize.toast('You are now offline', 4000);
   }, false);
   $window.addEventListener("online", function () {
     $rootScope.$apply(function() {
       $rootScope.online = true;
     });
+    Materialize.toast('You are online again', 4000)
   }, false);
 }
 
