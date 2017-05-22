@@ -7,7 +7,9 @@
     "node": "^4.2.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -21,7 +23,7 @@
   "homepage": "https://github.com/darragh-hayes/progress-api",
   "dependencies": {
     "boom": "3.1.1",
-    "chairo": "2.0.0",
+    "chairo": "3.0.0",
     "hapi": "^12.1.0",
     "hapi-auth-cookie": "6.1.1",
     "bell": "6.3.0",
@@ -31,11 +33,13 @@
     "request": "2.67.0",
     "seneca-mongo-store": "^0.2.0",
     "seneca-user": "0.2.10",
-    "seneca-web": "0.5.0",
-    "seneca-auth": "1.0.0"
+    "seneca-web": "1.0.0",
+    "seneca-auth": "1.0.0",
+    "snyk": "^1.30.1"
   },
   "devDependencies": {
     "browser-sync": "^2.11.1",
     "gulp": "^3.9.1"
-  }
+  },
+  "snyk": true
 }
