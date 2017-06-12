@@ -14,3 +14,5 @@ npm install
 ```bash
 node app.js
 ```
+
+## Testing
