@@ -21,7 +21,7 @@
   "homepage": "https://github.com/darragh-hayes/progress-api",
   "dependencies": {
     "boom": "3.1.1",
-    "chairo": "2.0.0",
+    "chairo": "3.0.0",
     "hapi": "^12.1.0",
     "hapi-auth-cookie": "6.1.1",
     "bell": "6.3.0",
@@ -29,9 +29,9 @@
     "joi": "7.2.0",
     "lodash": "^4.0.0",
     "request": "2.67.0",
-    "seneca-mongo-store": "^0.2.0",
+    "seneca-mongo-store": "^1.4.0",
     "seneca-user": "0.2.10",
-    "seneca-web": "0.5.0",
+    "seneca-web": "2.2.1",
     "seneca-auth": "1.0.0"
   },
   "devDependencies": {
